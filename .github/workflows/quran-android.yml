@@ -34,6 +34,15 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Apply Quran app icon
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          mkdir -p android/app/src/main/res/drawable
+          convert -background none icon.svg -resize 512x512 android/app/src/main/res/drawable/quran_icon.png
+          sed -i 's#android:icon="@mipmap/ic_launcher"#android:icon="@drawable/quran_icon"#' android/app/src/main/AndroidManifest.xml
+          sed -i 's#android:roundIcon="@mipmap/ic_launcher_round"#android:roundIcon="@drawable/quran_icon"#' android/app/src/main/AndroidManifest.xml
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
